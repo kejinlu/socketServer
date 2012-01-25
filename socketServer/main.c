@@ -91,7 +91,7 @@ int main (int argc, const char * argv[])
             //ret > 0 返回事件放在events中
             for (int i = 0; i < ret; i++) {
                 struct kevent current_event = events[i];
-                
+                //kevent中的ident就是文件描述符
                 if (current_event.ident == STDIN_FILENO) {
                     //标准输入
                     bzero(input_msg, BUFFER_SIZE);
