@@ -152,6 +152,7 @@ static void FileDescriptorCallBack(CFFileDescriptorRef f,
                 //客户端退出
                 NSLog(@"客户端(sock_fd=%d)退出",client.sock_fd);
                 [self.clients removeObjectForKey:[NSString stringWithFormat:@"%d",stream]];
+                close(client.sock_fd);
             }else{
                 NSLog(@"收到客户端(sock_fd=%d)消息:%@",client.sock_fd,[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
             }
