@@ -8,6 +8,9 @@
             <PersistentString
                value = "client_fds[i]">
             </PersistentString>
+            <PersistentString
+               value = "input_msg">
+            </PersistentString>
          </PersistentStrings>
       </ContextState>
    </ContextStates>

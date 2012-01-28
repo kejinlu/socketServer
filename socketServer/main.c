@@ -20,7 +20,7 @@
 
 #define BUFFER_SIZE 1024
 
-#define QUIT_CMD ".quit"
+#define QUIT_CMD ".quit\n"
 
 int client_fds[CONCURRENT_MAX];
 
@@ -108,6 +108,15 @@ int main (int argc, const char * argv[])
                 
                 //输入 ".quit" 则退出服务器
                 if (strcmp(input_msg, QUIT_CMD) == 0) {
+                    
+                    for (int i = 0; i < CONCURRENT_MAX; i++) {
+                        if (client_fds[i] != 0) {
+                            close(client_fds[i]);
+                        }
+                    }
+                    
+                    close(server_sock_fd);
+                    
                     exit(0);
                 }
                 
@@ -161,6 +170,7 @@ int main (int argc, const char * argv[])
                             printf("从客户端(%d)接受消息出错.\n",i);
                         }else{
                             FD_CLR(client_fds[i], &server_fd_set);
+                            close(client_fds[i]);
                             client_fds[i] = 0;
                             printf("客户端(%d)退出了\n",i);
                         }
@@ -173,6 +183,15 @@ int main (int argc, const char * argv[])
         
         
     }
+    
+    for (int i = 0; i < CONCURRENT_MAX; i++) {
+        if (client_fds[i] != 0) {
+            close(client_fds[i]);
+        }
+    }
+    
+    close(server_sock_fd);
+    
     return 0;
 }
 
