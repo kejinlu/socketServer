@@ -11,7 +11,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <string.h>
-
+#include <unistd.h>
 int main (int argc, const char * argv[])
 {
     struct sockaddr_in server_addr;
@@ -66,6 +66,9 @@ int main (int argc, const char * argv[])
         printf("client said:%s\n",recv_msg);
 
     }
+    
+    close(client_socket);
+    close(server_socket);
     
     return 0;
 }
