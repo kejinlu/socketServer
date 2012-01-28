@@ -23,7 +23,7 @@
 
 #define BUFFER_SIZE 1024
 
-#define QUIT_CMD ".quit"
+#define QUIT_CMD ".quit\n"
 
 int client_fds[CONCURRENT_MAX];
 
@@ -70,6 +70,7 @@ int main (int argc, const char * argv[])
     int kq = kqueue();
     if (kq == -1) {
         perror("创建kqueue出错!\n");
+        close(server_sock_fd);
         exit(1);
     }
     
@@ -99,6 +100,15 @@ int main (int argc, const char * argv[])
                     
                     //输入 ".quit" 则退出服务器
                     if (strcmp(input_msg, QUIT_CMD) == 0) {
+                        
+                        for (int i = 0; i < CONCURRENT_MAX; i++) {
+                            if (client_fds[i] != 0) {
+                                close(client_fds[i]);
+                            }
+                        }
+                        
+                        close(server_sock_fd);
+                        
                         exit(0);
                     }
                     
@@ -155,6 +165,7 @@ int main (int argc, const char * argv[])
                         
                         for (int i = 0; i < CONCURRENT_MAX; i++) {
                             if (client_fds[i] == (int)current_event.ident) {
+                                close(client_fds[i]);
                                 client_fds[i] = 0;
                                 break;
                             }
@@ -167,6 +178,14 @@ int main (int argc, const char * argv[])
             }
         }
     }
+    
+    for (int i = 0; i < CONCURRENT_MAX; i++) {
+        if (client_fds[i] != 0) {
+            close(client_fds[i]);
+        }
+    }
+    
+    close(server_sock_fd);
     
     return 0;
 }
