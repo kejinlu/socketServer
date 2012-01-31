@@ -8,4 +8,4 @@
 * 1.直接socket接口  `normal分支`
 * 2.使用select系统调用  `select分支`
 * 3.使用kqueue (很像Linux中的epoll)  `kqueue分支`
-* 4.使用Cocoa中的流 `NSStream分支`
+* 4.使用Cocoa中的流 `NSStream分支`,master分支的内容和此分支一致
